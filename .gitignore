@@ -149,3 +149,11 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+Debug
+*.filters
+*.vcxproj
+/DEngine/DEngine/*.vcxproj
+/DEngine/DEngine/*.filters
+/DEngine/DEngine/*.user
+/DEngine/DEngine/*.sdf
+/DEngine/DEngine/*.suo
