@@ -1,7 +1,9 @@
-#include "..\headers\DEngine.h"
 #include "..\..\stdafx.h"
 
-#define		WINWIDTH	1280
+#include "..\headers\DEngine.h"
+#include "..\..\Renderer\headers\D3DInitializer.h"
+
+#define		WINWIDTH	1024
 #define		WINHEIGHT	768
 
 extern		BOOL	_ogl;
@@ -29,17 +31,21 @@ bool		DEngine::DeleteInstance()
 	return false;
 }
 
+void DEngine::Initialize()
+{
+	_d3d = DRenderer::D3DInitializer::GetInstance();
+	_d3d->Initialize(m_hWnd);
+}
+
 DEngine::DEngine() : m_fWinWidth(WINWIDTH), m_fWinHeight(WINHEIGHT), m_bRun(true), m_bFullscreen(false)
 {
 	m_nMousePosX	= 0;
 	m_nMousePosY	= 0;
-
-
-
 }
 
 DEngine::~DEngine(void)
 {
+	_d3d->DeleteInstance();
 }
 
 void	DEngine::ResizeWindow()
@@ -54,6 +60,39 @@ void	DEngine::SetMousePos(int x, int y)
 	m_nMousePosX = x;
 	m_nMousePosY = y;
 #if _DEBUG
-	//printf("Mouse Position: (%d, %d)\n", x, y);
+	printf("Mouse Position: (%d, %d)\n", x, y);
 #endif
+}
+
+bool DEngine::Run()
+{
+	if (Input() == false)
+		m_bRun = false;
+	Update();
+	Render();
+
+	return m_bRun;
+}
+
+bool DEngine::Input()
+{
+	if (GetAsyncKeyState(VK_RETURN))
+		return false;
+
+	return true;
+
+}
+void DEngine::Update()
+{
+
+}
+
+void DEngine::Render()
+{
+	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f };
+	ID3D11RenderTargetView * rtv = _d3d->GetRenderTargetView();
+
+	_d3d->GetDeviceContext()->ClearRenderTargetView(rtv, ClearColor);
+
+	_d3d->GetSwapChain()->Present(0, 0);
 }

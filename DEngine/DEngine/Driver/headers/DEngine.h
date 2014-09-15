@@ -1,7 +1,11 @@
 #ifndef _DENGINE_
 #define _DENGINE_
 
-class	D3DInitializer;
+namespace DRenderer
+{
+	class	D3DInitializer;
+}
+
 // Singleton object
 class DEngine
 {
@@ -39,15 +43,24 @@ private:
 	bool				m_bRun;
 	bool				m_bOGL;
 	
-
+	DRenderer::D3DInitializer *		_d3d;
 public:
 	static DEngine*	GetInstance();
 	static bool		DeleteInstance();
+
+	void Initialize();
+	bool Run();
 private:
 	static	DEngine*	m_pInstance;
 
 	DEngine(void);
 	~DEngine(void);
+
+
+	// Engine functions
+	bool Input();
+	void Update();
+	void Render();
 };
 
 #endif

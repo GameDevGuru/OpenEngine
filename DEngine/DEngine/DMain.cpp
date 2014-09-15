@@ -62,6 +62,7 @@ int CALLBACK WinMain( _In_  HINSTANCE hInstance, _In_  HINSTANCE hPrevInstance,
 	if(!GenerateHWND(hWnd, driver, wcex.lpszClassName))
 		return -1;
 	driver->SetHwnd(hWnd);
+	driver->Initialize();
 	//***********************************************************
 	// Show the Window
 	//********************************************
@@ -70,8 +71,9 @@ int CALLBACK WinMain( _In_  HINSTANCE hInstance, _In_  HINSTANCE hPrevInstance,
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
-	while(msg.message != WM_QUIT && driver->IsRunning())
+	while(msg.message != WM_QUIT && driver->Run())
 	{
+		driver->Run();
 		if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
 		{ 
 			TranslateMessage( &msg );
