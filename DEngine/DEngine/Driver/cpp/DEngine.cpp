@@ -3,6 +3,9 @@
 #include "..\headers\DEngine.h"
 #include "..\..\Renderer\headers\D3DInitializer.h"
 
+#include "..\headers\DGameStateEngine.h"
+#include "..\..\Game States\headers\DGamePlayState.h"
+
 #define		WINWIDTH	1024
 #define		WINHEIGHT	768
 
@@ -41,11 +44,20 @@ DEngine::DEngine() : m_fWinWidth(WINWIDTH), m_fWinHeight(WINHEIGHT), m_bRun(true
 {
 	m_nMousePosX	= 0;
 	m_nMousePosY	= 0;
+
+	DState * _first_state = new DGamePlayState();
+	_player = new DGameStateEngine(_first_state);
 }
 
 DEngine::~DEngine(void)
 {
 	_d3d->DeleteInstance();
+
+	if (_player != nullptr)
+	{
+		delete _player;
+		_player = nullptr;
+	}
 }
 
 void	DEngine::ResizeWindow()
@@ -66,33 +78,10 @@ void	DEngine::SetMousePos(int x, int y)
 
 bool DEngine::Run()
 {
-	if (Input() == false)
+	if (_player->Input() == false)
 		m_bRun = false;
-	Update();
-	Render();
+	_player->Update();
+	_player->Render();
 
 	return m_bRun;
-}
-
-bool DEngine::Input()
-{
-	if (GetAsyncKeyState(VK_RETURN))
-		return false;
-
-	return true;
-
-}
-void DEngine::Update()
-{
-
-}
-
-void DEngine::Render()
-{
-	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f };
-	ID3D11RenderTargetView * rtv = _d3d->GetRenderTargetView();
-
-	_d3d->GetDeviceContext()->ClearRenderTargetView(rtv, ClearColor);
-
-	_d3d->GetSwapChain()->Present(0, 0);
 }

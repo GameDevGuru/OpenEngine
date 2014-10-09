@@ -1,10 +1,12 @@
 #ifndef _DENGINE_
 #define _DENGINE_
 
+class DGameStateEngine;
+
 namespace DRenderer
 {
 	class	D3DInitializer;
-}
+};
 
 // Singleton object
 class DEngine
@@ -44,6 +46,7 @@ private:
 	bool				m_bOGL;
 	
 	DRenderer::D3DInitializer *		_d3d;
+	DGameStateEngine *	_player;
 public:
 	static DEngine*	GetInstance();
 	static bool		DeleteInstance();
@@ -55,12 +58,6 @@ private:
 
 	DEngine(void);
 	~DEngine(void);
-
-
-	// Engine functions
-	bool Input();
-	void Update();
-	void Render();
 };
 
 #endif
