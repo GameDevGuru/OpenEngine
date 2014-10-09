@@ -73,7 +73,6 @@ int CALLBACK WinMain( _In_  HINSTANCE hInstance, _In_  HINSTANCE hPrevInstance,
 	ZeroMemory(&msg, sizeof(MSG));
 	while(msg.message != WM_QUIT && driver->Run())
 	{
-		driver->Run();
 		if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
 		{ 
 			TranslateMessage( &msg );
